@@ -1,0 +1,17 @@
+{
+  "name": "2way",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.mjs",
+  "scripts": {
+    "test": "nodemon main.mjs"
+  },
+  "keywords": [],
+  "author": "Ahmed Abuwarda",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.1",
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.21.1"
+  }
+}
