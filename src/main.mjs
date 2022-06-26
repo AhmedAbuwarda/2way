@@ -1,5 +1,5 @@
 import express from 'express';
-import { dbConnection } from './util/db-connection.mjs';
+import { dbConnection } from '../util/db-connection.mjs';
 
 const port = process.env.NODE_PORT || 3000;
 const app = express();
