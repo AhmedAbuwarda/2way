@@ -1,9 +1,9 @@
-import mysql from 'mysql2/promise';
+import { Sequelize } from 'sequelize';
 
-export const dbConnection = await mysql.createConnection({
-    host: 'localhost',
-    port: 3306,
-    database: '2way',
-    user: 'root',
-    password: ''
-});
+export const sequelize = new Sequelize(
+    "2way", "root", "",
+    {
+        host: 'localhost',
+        dialect: 'mysql'
+    }
+);

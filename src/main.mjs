@@ -1,5 +1,5 @@
 import express from 'express';
-import { dbConnection } from '../util/db-connection.mjs';
+import { MessageService } from '../services/message.mjs';
 
 const port = process.env.NODE_PORT || 3000;
 const app = express();
@@ -7,9 +7,12 @@ const app = express();
 //* use json to read data from body
 app.use(express.json());
 
+// create message service
+const messageService = new MessageService();
+
 // get all messages
 app.get('/messages', async (req, res) => {
-    const [messages] = await dbConnection.query('SELECT * FROM messages');
+    const messages = await messageService.getAll();
     return res.send(messages);
 });
 
