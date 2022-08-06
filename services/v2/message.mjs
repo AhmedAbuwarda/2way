@@ -1,5 +1,5 @@
 import { DataTypes } from 'sequelize';
-import { sequelize } from '../util/db-connection.mjs'
+import { sequelize } from '../../util/db-connection.mjs'
 
 export class MessageService {
     constructor() {
