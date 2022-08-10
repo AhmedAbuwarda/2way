@@ -12,9 +12,7 @@ messageRouter.use(authorize);
 
 // get all messages
 messageRouter.get('/', async (req, res) => {
-    // execute query to add column to messages table
-    // sequelize.query('ALTER table messages add column (user_id int(11));');
-    // return res.json(true);
+
     const user_id = req.user.user_id;
     const messages = await messageService.findAll(user_id);
     return res.send(messages);

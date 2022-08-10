@@ -1,8 +1,12 @@
 import mysql from 'mysql2/promise';
+import { sequelize } from '../util/db-connection.mjs';
+import fs from 'fs/promises';
+import path from 'path';
+
 import { config } from '../util/config.mjs';
-import { createTable as usersTable } from './migration/users.mjs';
-import { createTable as adminsTable } from './migration/admins.mjs';
-import { createTable as messagesTable } from './migration/messages.mjs';
+
+const __filename = new URL(import.meta.url).pathname;
+const __dirname = __filename.substring(1, __filename.lastIndexOf('/'));
 
 //! create db if it doesn't already exist
 const connection = await mysql.createConnection({
@@ -14,14 +18,20 @@ const connection = await mysql.createConnection({
 await connection.query(`CREATE DATABASE IF NOT EXISTS \`${config.DB_NAME}\`;`);
 //!
 
-async function createTables() {
-	// create user table
-	usersTable();
-	// create admin table
-	adminsTable();
-	// create messages table
-	messagesTable();
-}
+// read all files from 2way/models folder
+const models = await fs.readdir(path.join(__dirname, '../models'));
 
-//* create SQL all tables
-createTables();
+let x = 1;
+await models.forEach(async (model) => {
+	if (model.endsWith('.mjs')) {
+		let { table } = await import(`../models/${model}`);
+		// create table if it doesn't already exist
+		let queryInterface = sequelize.getQueryInterface();
+		await queryInterface.createTable(model.split('.')[0], table);
+		x += 1;
+	}
+	// exit process successfully
+	if (x == models.length) {
+		process.exit(0);
+	}
+});
