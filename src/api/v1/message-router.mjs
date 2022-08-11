@@ -1,20 +1,27 @@
 import express from 'express';
+import Hashids from 'hashids';
+
 import { MessageService } from '../../../services/v1/message.mjs';
 import { authorize } from '../../../util/authorize.mjs';
-// import { sequelize } from '../../../util/db-connection.mjs';
+import { config } from '../../../util/config.mjs';
 
 // create router
 export const messageRouter = express.Router();
-// create message service
+// create message service object
 const messageService = new MessageService();
+// create new hashids object
+const hashids = new Hashids(config.NODE_HASH_KEY, config.NODE_HASH_KEY_LENGTH);
+console.log(hashids.encode(1));
 // use authorize middleware
 messageRouter.use(authorize);
 
 // get all messages
 messageRouter.get('/', async (req, res) => {
-
+    // get user id from request
     const user_id = req.user.user_id;
+    // get all messages related to user
     const messages = await messageService.findAll(user_id);
+    // send response
     return res.send(messages);
 });
 
@@ -27,14 +34,18 @@ messageRouter.get('/:id', async (req, res) => {
 
 // create new message
 messageRouter.post('/', async (req, res) => {
-    const { content } = req.body;
-    if (!content) {
+    const { content, user_id } = req.body;
+    if (!content || !user_id) {
         return res.status(400).json({
             message: 'Missing body'
         });
     }
+    const message = {
+        content: content,
+        user_id: hashids.decode(user_id)[0]
+    }
     try {
-        await messageService.create({ content });
+        const mes = await messageService.create(message);
         return res.status(201).send({
             message: 'Message Created Successfully'
         });
@@ -50,7 +61,7 @@ messageRouter.post('/', async (req, res) => {
 // update certain message using id
 messageRouter.put('/:id', async (req, res) => {
     const id = req.params.id;
-    const {title, content} = req.body;
+    const { title, content } = req.body;
     try {
         await dbConnection.query('UPDATE messages SET title = ?, content = ? WHERE id = ?', [title, content, id]);
         return res.json({
@@ -71,7 +82,7 @@ messageRouter.put('/:id', async (req, res) => {
 // delete certain message using id
 messageRouter.delete('/:id', async (req, res) => {
     const id = req.params.id;
-    try{
+    try {
         await dbConnection.query('DELETE FROM messages WHERE id = ?', [id]);
         return res.json({
             message: 'Message Deleted Successfully',

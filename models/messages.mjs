@@ -23,8 +23,7 @@ export const table = {
         allowNull: false,
         defaultValue: '',
         validate: {
-            len: [1, 255],
-            msg: 'Message must be between 1 and 255 characters'
+            notEmpty: true,
         }
     },
     created_at: {

@@ -1,5 +1,7 @@
 import jwt from 'jsonwebtoken';
-const key = process.env.NODE_JWT_KEY;
+import { config } from './config.mjs';
+
+const key = config.NODE_JWT_KEY;
 
 export async function authorize(req, res, next) {
     // check if user is logged in using bearer token

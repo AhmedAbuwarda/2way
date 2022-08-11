@@ -1,45 +1,10 @@
-import sequelize from 'sequelize';
+import { sequelize } from '../../util/db-connection.mjs'
+import { table } from '../../models/users.mjs';
 
 export class userService {
     constructor() {
         this.User = sequelize.define(
-            'User',
-            {
-                id: {
-                    type: sequelize.INTEGER,
-                    primaryKey: true,
-                    autoIncrement: true,
-                    allowNull: false,
-                    unique: true
-                },
-                username: {
-                    type: sequelize.STRING,
-                    allowNull: false,
-                    unique: true,
-                    validate: {
-                        notEmpty: true,
-                        length: {
-                            min: 3,
-                            max: 255,
-                            msg: 'Username must be between 3 and 255 characters',
-                        }, // end length
-                    },
-                    defaultValue: ''
-                }, 
-                password: {
-                    type: sequelize.STRING,
-                    allowNull: false,
-                    validate: {
-                        notEmpty: true,
-                        length: {
-                            min: 8,
-                            max: 255,
-                            msg: 'Password must be between 8 and 255 characters',
-                        },
-                    },
-                    defaultValue: ''
-                }
-            },
+            'User', table,
             {
                 tableName: 'users',
                 timestamps: true,
@@ -47,5 +12,39 @@ export class userService {
                 updatedAt: 'updated_at'
             }
         );
+    }
+
+    // get all users
+    async findAll() {
+        return await this.User.findAll();
+    }
+
+    // get user by id
+    async findByPk(id) {
+        return await this.User.findByPk(id);
+    }
+
+    // get user by username
+    async findByUsername(username) {
+        return await this.User.findOne({
+            where: {
+                username: username
+            }
+        });
+    }
+
+    // create user
+    async create(user) {
+        return await this.User.create(user);
+    }
+
+    // update user
+    async update(user) {
+        return await this.User.update(user, { where: { id: user.id } });
+    }
+
+    // destroy user
+    async destroy(id) {
+        return await this.User.destroy({ where: { id: id } });
     }
 }

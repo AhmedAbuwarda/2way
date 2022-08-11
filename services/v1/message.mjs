@@ -1,48 +1,17 @@
-import { DataTypes } from 'sequelize';
 import { sequelize } from '../../util/db-connection.mjs'
+import { table } from '../../models/messages.mjs';
 
 export class MessageService {
     constructor() {
-        this.Message = sequelize.define("Message", 
-        {
-            content: {
-                type: DataTypes.STRING,
-                allowNull: false,
-                validate: {
-                    notEmpty: true,
-                    length: {
-                        min: 1,
-                        max: 255,
-                        msg: 'Content must be between 1 and 255 characters',
-                    }
-                },
-                defaultValue: ''
-            },
-            user_id: {
-                type: DataTypes.INTEGER,
-                allowNull: false,
-                validate: {
-                    notEmpty: true,
-                    length: {
-                        min: 1,
-                        max: 11,
-                    }
-                },
-                references: {
-                    model: 'User',  
-                    key: 'id'
-                },
-                defaultValue: null,
-                onDelete: 'CASCADE',
-                onUpdate: 'CASCADE'
+        this.Message = sequelize.define(
+            "Message", table,
+            {
+                tableName: "messages",
+                timestamps: true,
+                createdAt: "created_at",
+                updatedAt: "updated_at"
             }
-        },
-        {
-            tableName: "messages",
-            timestamps: false,
-            createdAt: 'created_at',
-            updatedAt: 'updated_at'
-        });
+        );
     }
 
     // get all messages
@@ -64,15 +33,6 @@ export class MessageService {
     // create new message
     async create(message) {
         return await this.Message.create(message);
-    }
-
-    // update message using id
-    async update(id, message) {
-        return await this.Message.update(message, {
-            where: {
-                id: id
-            }
-        });
     }
 
     // delete message using id

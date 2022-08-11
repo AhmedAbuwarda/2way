@@ -7,5 +7,5 @@ import { authenticateRouter } from '../v1/authenticate.mjs';
 export const v1Router = express.Router();
 // use authentication router
 v1Router.use(authenticateRouter);
-// use messageRouter
+// use messageRouter to handle /messages
 v1Router.use('/messages', messageRouter);

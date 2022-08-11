@@ -28,8 +28,12 @@ for (let i = 2; i < process.argv.length; i++) {
 	const fileExists = models.some((model) => model === name);
 	// if file with name of table exists then delete file with name of table
 	if (fileExists) {
+		// delete model file
 		await fs.unlink(path.join(__dirname, `../../models/${name}`));
 		console.log(`Model: ${name} deleted successfully`);
+		// delete service file
+		await fs.unlink(path.join(__dirname, `../../services/v1/${name}`));
+		console.log(`Service: ${name} deleted successfully`);
 		// delete file with name of table from my sql database
 		name = name.substring(0, name.lastIndexOf('.'));
 		await sequelize.query(`DROP TABLE IF EXISTS ${name}`);

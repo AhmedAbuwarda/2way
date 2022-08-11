@@ -14,12 +14,7 @@ export const table = {
         allowNull: false,
         unique: true,
         validate: {
-            notEmpty: true,
-            length: {
-                min: 1,
-                max: 25,
-                msg: 'Username must be between 1 and 25 characters',
-            }
+            notEmpty: true
         }
     },
     email: {

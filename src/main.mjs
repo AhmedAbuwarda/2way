@@ -1,10 +1,10 @@
-import 'dotenv/config';
 import express from 'express';
 import helmet from 'helmet';
 // routers
 import { apiRouter } from '../src/api/api-router.mjs';
+import { config } from '../util/config.mjs';
 
-const port = process.env.NODE_PORT;
+const port = config.NODE_PORT;
 const app = express();
 
 //* use helmet
