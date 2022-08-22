@@ -11,7 +11,6 @@ export const messageRouter = express.Router();
 const messageService = new MessageService();
 // create new hashids object
 const hashids = new Hashids(config.NODE_HASH_KEY, config.NODE_HASH_KEY_LENGTH);
-console.log(hashids.encode(1));
 // use authorize middleware
 messageRouter.use(authorize);
 

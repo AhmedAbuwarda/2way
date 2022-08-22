@@ -10,10 +10,18 @@
     "migrate:create": "node .\\database\\migration\\create.mjs",
     "migrate:drop": "node .\\database\\migration\\drop.mjs"
   },
-  "keywords": ["express", "node", "typescript", "mysql", "sequelize", "javascript"],
+  "keywords": [
+    "express",
+    "node",
+    "typescript",
+    "mysql",
+    "sequelize",
+    "javascript"
+  ],
   "author": "Ahmed Abuwarda",
   "license": "ISC",
   "dependencies": {
+    "compression": "^1.7.4",
     "express": "^4.18.1",
     "hashids": "^2.2.10",
     "hbs": "^4.2.0",
