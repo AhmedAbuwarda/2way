@@ -1,4 +1,4 @@
-# # 2way is a private message app
+# # 2way is a private message app like 'saraha'
 It is an easy to use app, for fun purpose only.
 
 ## # How to run the app
